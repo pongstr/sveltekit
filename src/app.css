@@ -1,0 +1,246 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@plugin "@tailwindcss/typography";
+@plugin "@tailwindcss/forms";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --rosewater: hsl(11, 59%, 67%);
+  --flamingo: hsl(0, 60%, 67%);
+  --pink: hsl(316, 73%, 69%);
+  --mauve: hsl(266, 85%, 58%);
+  --red: hsl(347, 87%, 44%);
+  --maroon: hsl(355, 76%, 59%);
+  --peach: hsl(22, 99%, 52%);
+  --yellow: hsl(35, 77%, 49%);
+  --green: hsl(109, 58%, 40%);
+  --teal: hsl(183, 74%, 35%);
+  --sky: hsl(197, 97%, 46%);
+  --sapphire: hsl(189, 70%, 42%);
+  --blue: hsl(220, 91%, 54%);
+  --lavender: hsl(231, 97%, 72%);
+  --text: hsl(234, 16%, 35%);
+  --subtext1: hsl(233, 13%, 41%);
+  --subtext0: hsl(233, 10%, 47%);
+  --overlay2: hsl(232, 10%, 53%);
+  --overlay1: hsl(231, 10%, 59%);
+  --overlay0: hsl(228, 11%, 65%);
+  --surface2: hsl(227, 12%, 71%);
+  --surface1: hsl(225, 14%, 77%);
+  --surface0: hsl(223, 16%, 83%);
+  --base: hsl(220, 23%, 95%);
+  --mantle: hsl(220, 22%, 92%);
+  --crust: hsl(220, 21%, 89%);
+
+  --radius: 0.5rem;
+  --background: var(--crust);
+  --foreground: var(--text);
+  --card: var(--mantle);
+  --card-foreground: var(--text);
+  --popover: var(--base);
+  --popover-foreground: var(--text);
+  --primary: var(--mauve);
+  --primary-foreground: var(--base);
+  --secondary: var(--surface0);
+  --secondary-foreground: var(--text);
+  --muted: var(--mantle);
+  --muted-foreground: var(--subtext1);
+  --accent: var(--mauve);
+  --accent-foreground: var(--base);
+  --destructive: var(--red);
+  --destructive-foreground: var(--base);
+  --border: var(--surface0);
+  --input: var(--crust);
+  --ring: var(--mauve);
+  --radius: 0.5rem;
+  --chart-1: var(--maroon);
+  --chart-2: var(--teal);
+  --chart-3: var(--blue);
+  --chart-4: var(--yellow);
+  --chart-5: var(--green);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.141 0.005 285.823);
+  --sidebar-primary: oklch(0.21 0.006 285.885);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.967 0.001 286.375);
+  --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
+  --sidebar-border: oklch(0.92 0.004 286.32);
+  --sidebar-ring: oklch(0.705 0.015 286.067);
+}
+
+.frappe {
+  --rosewater: hsl(10, 57%, 88%);
+  --flamingo: hsl(0, 59%, 84%);
+  --pink: hsl(316, 73%, 84%);
+  --mauve: hsl(277, 59%, 76%);
+  --red: hsl(359, 68%, 71%);
+  --maroon: hsl(358, 66%, 76%);
+  --peach: hsl(20, 79%, 70%);
+  --yellow: hsl(40, 62%, 73%);
+  --green: hsl(96, 44%, 68%);
+  --teal: hsl(172, 39%, 65%);
+  --sky: hsl(189, 48%, 73%);
+  --sapphire: hsl(199, 55%, 69%);
+  --blue: hsl(222, 74%, 74%);
+  --lavender: hsl(239, 66%, 84%);
+  --text: hsl(227, 70%, 87%);
+  --subtext1: hsl(227, 44%, 80%);
+  --subtext0: hsl(228, 29%, 73%);
+  --overlay2: hsl(228, 22%, 66%);
+  --overlay1: hsl(227, 17%, 58%);
+  --overlay0: hsl(229, 13%, 52%);
+  --surface2: hsl(228, 13%, 44%);
+  --surface1: hsl(227, 15%, 37%);
+  --surface0: hsl(230, 16%, 30%);
+  --base: hsl(229, 19%, 23%);
+  --mantle: hsl(231, 19%, 20%);
+  --crust: hsl(229, 20%, 17%);
+}
+
+.macchiato {
+  --rosewater: hsl(10, 58%, 90%);
+  --flamingo: hsl(0, 58%, 86%);
+  --pink: hsl(316, 74%, 85%);
+  --mauve: hsl(267, 83%, 80%);
+  --red: hsl(351, 74%, 73%);
+  --maroon: hsl(355, 71%, 77%);
+  --peach: hsl(21, 86%, 73%);
+  --yellow: hsl(40, 70%, 78%);
+  --green: hsl(105, 48%, 72%);
+  --teal: hsl(171, 47%, 69%);
+  --sky: hsl(189, 59%, 73%);
+  --sapphire: hsl(199, 66%, 69%);
+  --blue: hsl(220, 83%, 75%);
+  --lavender: hsl(234, 82%, 85%);
+  --text: hsl(227, 68%, 88%);
+  --subtext1: hsl(228, 39%, 80%);
+  --subtext0: hsl(227, 27%, 72%);
+  --overlay2: hsl(228, 20%, 65%);
+  --overlay1: hsl(228, 15%, 57%);
+  --overlay0: hsl(230, 12%, 49%);
+  --surface2: hsl(230, 14%, 41%);
+  --surface1: hsl(231, 16%, 34%);
+  --surface0: hsl(230, 19%, 26%);
+  --base: hsl(232, 23%, 18%);
+  --mantle: hsl(233, 23%, 15%);
+  --crust: hsl(236, 23%, 12%);
+}
+
+.mocha {
+  --rosewater: hsl(10, 56%, 91%);
+  --flamingo: hsl(0, 59%, 88%);
+  --pink: hsl(316, 72%, 86%);
+  --mauve: hsl(267, 84%, 81%);
+  --red: hsl(343, 81%, 75%);
+  --maroon: hsl(350, 65%, 77%);
+  --peach: hsl(23, 92%, 75%);
+  --yellow: hsl(41, 86%, 83%);
+  --green: hsl(115, 54%, 76%);
+  --teal: hsl(170, 57%, 73%);
+  --sky: hsl(189, 71%, 73%);
+  --sapphire: hsl(199, 76%, 69%);
+  --blue: hsl(217, 92%, 76%);
+  --lavender: hsl(232, 97%, 85%);
+  --text: hsl(226, 64%, 88%);
+  --subtext1: hsl(227, 35%, 80%);
+  --subtext0: hsl(228, 24%, 72%);
+  --overlay2: hsl(228, 17%, 64%);
+  --overlay1: hsl(230, 13%, 55%);
+  --overlay0: hsl(231, 11%, 47%);
+  --surface2: hsl(233, 12%, 39%);
+  --surface1: hsl(234, 13%, 31%);
+  --surface0: hsl(237, 16%, 23%);
+  --base: hsl(240, 21%, 15%);
+  --mantle: hsl(240, 21%, 12%);
+  --crust: hsl(240, 23%, 9%);
+}
+
+@theme inline {
+  --font-sans:
+    'Poppins', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-mono:
+    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-rosewater: var(--rosewater);
+  --color-flamingo: var(--flamingo);
+  --color-pink: var(--pink);
+  --color-mauve: var(--mauve);
+  --color-red: var(--red);
+  --color-maroon: var(--maroon);
+  --color-peach: var(--peach);
+  --color-yellow: var(--yellow);
+  --color-green: var(--green);
+  --color-teal: var(--teal);
+  --color-sky: var(--sky);
+  --color-sapphire: var(--sapphire);
+  --color-blue: var(--blue);
+  --color-lavender: var(--lavender);
+  --color-text: var(--text);
+  --color-subtext1: var(--subtext1);
+  --color-subtext0: var(--subtext0);
+  --color-overlay2: var(--overlay2);
+  --color-overlay1: var(--overlay1);
+  --color-overlay0: var(--overlay0);
+  --color-surface2: var(--surface2);
+  --color-surface1: var(--surface1);
+  --color-surface0: var(--surface0);
+  --color-base: var(--base);
+  --color-mantle: var(--mantle);
+  --color-crust: var(--crust);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+  html,
+  body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+}
