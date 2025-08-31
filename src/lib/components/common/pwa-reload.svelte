@@ -4,17 +4,20 @@
   const { needRefresh, updateServiceWorker, offlineReady } = useRegisterSW({
     onRegistered(worker: ServiceWorkerRegistration | undefined) {
       // uncomment following code if you want check for updates
-      // r && setInterval(() => {
-      //    console.log('Checking for sw update')
-      //    r.update()
-      // }, 20000 /* 20s for testing purposes */)
+      if (worker) {
+        setInterval(() => {
+          // eslint-disable-next-line no-console
+          console.info('Checking for sw update')
+          worker.update()
+        }, 3600)
+      }
 
       // eslint-disable-next-line no-console
-      console.log(`SW Registered: ${worker}`)
+      console.info(`SW Registered: ${worker}`)
     },
     onRegisterError(error: unknown) {
       // eslint-disable-next-line no-console
-      console.log('SW registration error', error)
+      console.info('SW registration error', error)
     },
   })
 
