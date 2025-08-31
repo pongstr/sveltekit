@@ -1,5 +1,11 @@
 # sveltekit-stack
 
+## 0.1.1
+
+### Patch Changes
+
+- 25a6429: feat(cloudflare): init migration
+
 ## 0.1.0
 
 ### Minor Changes
