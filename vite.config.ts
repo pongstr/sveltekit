@@ -2,6 +2,7 @@ import { sveltekit } from '@sveltejs/kit/vite'
 import tailwindcss from '@tailwindcss/vite'
 import { SvelteKitPWA } from '@vite-pwa/sveltekit'
 import { defineConfig } from 'vite'
+import devtoolsJson from 'vite-plugin-devtools-json'
 
 export default defineConfig({
   plugins: [
@@ -9,11 +10,6 @@ export default defineConfig({
     sveltekit(),
     SvelteKitPWA({
       injectRegister: 'script-defer',
-      devOptions: {
-        type: 'module',
-        enabled: true,
-        suppressWarnings: true,
-      },
       useCredentials: true,
       scope: '/',
       base: '/',
@@ -66,5 +62,6 @@ export default defineConfig({
       },
       workbox: { cleanupOutdatedCaches: true },
     }),
+    devtoolsJson(),
   ],
 })
