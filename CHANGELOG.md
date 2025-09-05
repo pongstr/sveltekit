@@ -1,5 +1,11 @@
 # sveltekit-stack
 
+## 0.1.2
+
+### Patch Changes
+
+- 345acfe: chore: init feature-preview+release deply
+
 ## 0.1.1
 
 ### Patch Changes
