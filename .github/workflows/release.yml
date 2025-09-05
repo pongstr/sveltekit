@@ -1,48 +1,13 @@
-name: Pull Request
+name: Release
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  push:
+    branches:
+      - main
 
 jobs:
-  prerequisites:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Ensure changeset exists
-        run: |
-          CHANGED_FILES=$(git diff --name-only origin/main...HEAD)
-          echo "Changed files:"
-          echo "$CHANGED_FILES"
-
-          VALID_CHANGESET=$(echo "$CHANGED_FILES" | grep '^\.changeset/.*\.md$' | grep -v '^\.changeset/README\.md$')
-
-          if [ -z "$VALID_CHANGESET" ]; then
-            echo "⚠️  You must add a changeset in .changesets/ (excluding README.md)!"
-            exit 1
-          fi
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'pnpm'
-
-      - name: Install dependencies + run checks
-        run: |
-          corepack enable
-          pnpm install
-          pnpm lint
-          pnpm check
-
   build:
     runs-on: ubuntu-latest
-    needs:
-      - prerequisites
+    if: github.actor == 'changesets[bot]' || github.actor == 'changesets-bot'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -61,26 +26,19 @@ jobs:
         run: |
           corepack enable
           pnpm install
-          pnpm lint
           pnpm check
           pnpm build
-          rm .svelte-kit/cloudflare/_worker.js.map
 
       - name: Upload build output
         uses: actions/upload-artifact@v4
         with:
-          name: sveltekit-build
-          path: .svelte-kit/cloudflare
+          name: build-output
+          path: .sveltekit
 
-  deploy-preview:
-    needs:
-      - prerequisites
-      - build
+  create-release:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      deployments: write
-      pull-requests: write
+    needs: build
+    if: github.actor == 'changesets[bot]' || github.actor == 'changesets-bot'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -100,24 +58,53 @@ jobs:
           corepack enable
           pnpm install
 
-      - name: Download build artifact
+      - name: Create Release Pull Request or Publish to npm
+        uses: changesets/action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy:
+    needs:
+      - build
+      - create-release
+    runs-on: ubuntu-latest
+    if: github.actor == 'changesets[bot]' || github.actor == 'changesets-bot'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+
+      - name: Install dependencies + run checks
+        run: |
+          corepack enable
+          pnpm install
+
+      - name: Download build output
         uses: actions/download-artifact@v4
         with:
-          name: sveltekit-build
-          path: .svelte-kit/cloudflare
+          name: build-output
+          path: .sveltekit
 
       - name: Deploy Preview to Cloudflare Pages
-        id: deploy
         uses: cloudflare/wrangler-action@v3
+        id: deploy
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           wranglerVersion: '4.34.0'
-          command: pages deploy .svelte-kit/cloudflare --project-name=sveltekit --branch=${{ github.head_ref }}
+          command: pages deploy .svelte-kit/cloudflare --project-name=sveltekit
           packageManager: pnpm
 
-      - name: Comment Preview URL on PR
-        uses: moojing/cf-preview-bot@v1
-        with:
-          deployment_url: ${{ steps.deploy.outputs.deployment-url }}
-          branch_preview_url: ${{ steps.deploy.outputs.pages-deployment-alias-url }}
+      - name: print deployment-url
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
+        run: echo $DEPLOYMENT_URL
