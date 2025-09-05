@@ -27,6 +27,7 @@ jobs:
           pnpm install
           pnpm check
           pnpm build
+          rm .svelte-kit/cloudflare/_worker.js.map
 
       - name: Upload build output
         uses: actions/upload-artifact@v4
@@ -89,7 +90,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-output
-          path: .svelte-kit
+          path: .
 
       - name: Deploy Preview to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
