@@ -1,11 +1,12 @@
 name: Pull Request
 on:
+  pull_request:
+    types: [opened, synchronize, reopened]
   push:
-    branches:
+    branches-ignore:
       - main
-
 jobs:
-  cache-and-install:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,27 +22,69 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
 
-      - name: Install dependencies + run pre-release checks
+      - name: Install dependencies + run checks
         run: |
           corepack enable
-          pnpm --version
-
           pnpm install
           pnpm lint
           pnpm check
           pnpm build
 
-        env:
-          GITHUB_TOKEN: ${{ secrets.HUB_TOKEN }}
-
       - name: Upload build output
-        if: github.actor == 'version-app[bot]'
         uses: actions/upload-artifact@v4
         with:
-          name: build-output
-          path: .sveltekit
+          name: sveltekit-build
+          path: .svelte-kit/cloudflare
 
-      - name: Create Release Pull Request or Publish to npm
+  deploy-preview:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+
+      - name: Enable corepack
+        run: |
+          corepack enable
+
+      - uses: pnpm/action-setup@v4
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: sveltekit-build
+          path: .svelte-kit/cloudflare
+
+      - name: Deploy Preview to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy .svelte-kit/cloudflare --project-name=sveltekit --branch=${{ github.head_ref }}
+
+  changesets:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+
+      - name: Enable corepack
+        run: |
+          corepack enable
+
+      - name: Run Changesets
         uses: changesets/action@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.HUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
