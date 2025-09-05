@@ -32,7 +32,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-output
-          path: .sveltekit
+          path: .svelte-kit
 
   create-release:
     runs-on: ubuntu-latest
@@ -89,7 +89,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-output
-          path: .sveltekit
+          path: .svelte-kit
 
       - name: Deploy Preview to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
